@@ -34,7 +34,6 @@ return (
 
     {/* Inputs  */}
     <div className="form-group-inputs">
-        <h3>Build Your Own Pizza</h3>
 
         {/* Text Inputs */}
         <h4>Your Name</h4>
