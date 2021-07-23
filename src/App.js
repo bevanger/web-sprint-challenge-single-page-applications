@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import { Route, Link, Switch } from 'react-router-dom';
 import Form from './Components/Form';
 import Home from './Components/Home';
+import schema from './Validation/formSchema';
 import { reach } from 'yup';
-import { validate } from "@babel/types";
+import axios from 'axios';
+import Order from './Components/Order';
+import './App.css';
+
+
 
 
 const initialFormValues= {
@@ -13,10 +18,10 @@ const initialFormValues= {
   //dropdown//
   size: '',
   //checkboxes//
-  cheese: '',
-  pepperoni: '',
-  bacon: '',
-  sausage: '',
+  cheese: false,
+  pepperoni: false,
+  bacon: false,
+  sausage: false,
 };
 
 const initialFormErrors = {
@@ -26,14 +31,34 @@ const initialFormErrors = {
 };
 
 const initialOrder = [];
-const initialDisabled = true;
+
 
 const App = () => {
   //States//
-  const [pizzas, setPizzas] = useState(initialOrder);
+  const [orders, setOrders] = useState(initialOrder);
   const [formValues, setFormValues] = useState(initialFormValues);
   const [formErrors, setFormErrors] = useState(initialFormErrors);
-  const [disabled, setDisabled] = useState(initialDisabled);
+ 
+
+const postNewOrder = newOrder => {
+  axios.post('https://reqres.in/api/orders', newOrder)
+    .then(res => {
+      setOrders([res.data, ...orders])
+    })
+    .catch(err => {
+      console.log(err)
+    })
+    .finally(() => {
+      setFormValues(initialFormValues)
+    })
+};
+
+const validate = (name, value) => {
+  reach(schema, name)
+   .validate(value)
+   .then(() => setFormErrors({ ...formErrors, [name]: ''}))
+   .catch(err => setFormErrors({...formErrors, [name]: err.errors[0]}))
+};
 
  //Event handlers//
  const inputChange = (name, value) => {
@@ -47,39 +72,35 @@ const App = () => {
  const formSubmit = () => {
    const newOrder ={
      name: formValues.name.trim(),
-     instructions: formValues.name.trim(),
+     instructions: formValues.instructions.trim(),
      toppings: ['cheese', 'pepperoni', 'bacon', 'sausage'].filter(top => formValues[top])
    };
-
- }
-
-//  useEffect(() => {
-//   schema.isValid(formValues).then(valid => setDisabled(!valid))
-//  }, [formValues]);
-
+   postNewOrder(newOrder)
+ };
+ 
   return (
     <div id="order-pizza">
-      <nav>
+      <nav className="navigation">
         <h1 className="website-header">Lambda Eats</h1>
         <div className="nav-links">
           <Link to = '/'>Home</Link>
-          <Link to = '/pizza'>Pizza Form</Link>
+          <Link to = '/pizza-order'>Pizza Form</Link>
         </div>
       </nav>
       <Form
         values={formValues}
         change={inputChange}
         submit={formSubmit}
-        disabled={disabled}
         errors={formErrors}
       />
 
       {
-        pizzas.map(orderInfo => {
+        orders.map(orderInfo => {
           return(
-            <p>{orderInfo.name}</p>
+            <Order key={orderInfo.id} details={orderInfo}/>
           )
         })
+        
       }
       <Switch>
         <Route path = '/pizza-order'>
@@ -90,6 +111,7 @@ const App = () => {
         </Route>
       </Switch>
     </div>
+    
   );
 };
 export default App;

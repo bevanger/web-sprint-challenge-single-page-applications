@@ -5,7 +5,6 @@ export default function pizzaForm (props) {
         values, 
         submit, 
         change, 
-        disabled, 
         errors, 
     } = props;
 
@@ -39,7 +38,6 @@ return (
 
         {/* Text Inputs */}
         <h4>Your Name</h4>
-        <label>Name
             <input
                 id="name-input"
                 value={values.name}
@@ -47,9 +45,8 @@ return (
                 name="name"
                 type="text"
             />
-        </label>
+        
         <h4>Special Instructions</h4>
-        <label>Special Instructions
             <input
                 id="special-text"
                 value={values.instructions}
@@ -57,11 +54,10 @@ return (
                 name="instructions"
                 type="text"
             />
-        </label>
+        
 
         {/* Dropdown */}
         <h4>Choose Your Size</h4>
-        <label>Size
             <select
                 id="size-dropdown"
                 onChange={onChange}
@@ -74,7 +70,6 @@ return (
                 <option value = 'large'>Large</option>
                 <option value = 'xl'>Extra Large</option>
             </select>
-        </label>
 
         {/* Checkboxes */}
         <h4>Choose Your Toppings</h4>
@@ -99,7 +94,7 @@ return (
         <label>Bacon
             <input
                 type="checkbox"
-                name="Bacon"
+                name="bacon"
                 onChange={onChange}
                 checked={values.bacon}
             />
@@ -114,8 +109,8 @@ return (
             />
         </label>
 
-        {/* Disabled the button */}
-        <button disabled={disabled}>Order</button>
+        {/* Order button */}
+        <button id="order-button">Order</button>
     </div>
 </form>
 )
