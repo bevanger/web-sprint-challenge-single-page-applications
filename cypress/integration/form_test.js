@@ -4,6 +4,7 @@ describe('Pizza App', () => {
     });
 const nameInput = () => cy.get('input[name="name"]');
 const instructionsInput = () => cy.get('input[name="instructions"]');
+const sizeSelector = () => cy.get('select[name="size"]')
 const cheeseInput = () => cy.get('input[name="cheese"]');
 const pepperoniInput = () => cy.get('input[name="pepperoni"]');
 const baconInput = () => cy.get('input[name="bacon"]');

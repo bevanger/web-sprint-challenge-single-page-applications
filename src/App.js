@@ -6,7 +6,7 @@ import schema from './Validation/formSchema';
 import { reach } from 'yup';
 import axios from 'axios';
 import Order from './Components/Order';
-import './App.css';
+
 
 
 
@@ -73,6 +73,7 @@ const validate = (name, value) => {
    const newOrder ={
      name: formValues.name.trim(),
      instructions: formValues.instructions.trim(),
+     size: formValues.size.trim(),
      toppings: ['cheese', 'pepperoni', 'bacon', 'sausage'].filter(top => formValues[top])
    };
    postNewOrder(newOrder)
@@ -103,8 +104,8 @@ const validate = (name, value) => {
         
       }
       <Switch>
-        <Route path = '/pizza-order'>
-          <Form />
+        <Route path = '/pizzaForm'>
+          <Order />
         </Route>
         <Route path = "/">
           <Home/>
